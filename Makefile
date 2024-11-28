@@ -23,11 +23,13 @@
 # Path to the module source
 M ?= $(shell pwd)
 
-ifneq ($(KERNEL_SRC),)
-  KBUILD_OPTIONS += BCMDHD_ROOT=$(shell cd $(KERNEL_SRC); readlink -e $(M))
-  -include $(KERNEL_SRC)/../private/google-modules/soc/gs/Makefile.include
-  EXTRA_CFLAGS+="-Wno-missing-prototypes"
-endif
+KBUILD_OPTIONS += BCMDHD_ROOT=$(srctree)/$(src)
+-include $(KERNEL_SRC)/../private/google-modules/soc/gs/Makefile.include
+EXTRA_CFLAGS += -Wno-missing-prototypes
+EXTRA_CFLAGS += -Wno-error=address
+EXTRA_CFLAGS += -Wno-error=unused-variable
+EXTRA_CFLAGS += -Wno-error=implicit-function-declaration
+EXTRA_CFLAGS += -Wno-error=int-in-bool-context
 
 all:
 	$(MAKE) -C $(KERNEL_SRC) M=$(M) \
